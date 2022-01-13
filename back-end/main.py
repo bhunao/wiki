@@ -33,7 +33,13 @@ def read_pages(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return pages
 
 
-@app.get("/bagulho")
+@app.get("/home")
 def read_pages(request: Request):
     #pages = crud.get_pages(db, skip=skip, limit=limit)
     return templates.TemplateResponse("home.html", {"request": request})
+
+@app.get("/page/{id}")
+def load_page(request: Request, id: int, db: Session = Depends(get_db)):
+    page = crud.get_page_by_id(db, id)
+    print(page)
+    return templates.TemplateResponse("page.html", {"request": request, "page": page})
